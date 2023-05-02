@@ -37,7 +37,7 @@ const animationStates = [
     },
     {
         name: "Dead",
-        frames: 5,
+        frames: 4,
         img: "Dead.png",
     },
     {
@@ -74,10 +74,31 @@ animationStates.forEach((state) => {
 
 dropdown.addEventListener("change", e => {
     chooseState = e.target.value;
-    console.log(chooseState);
     playerImage.src = `${chooseState}.png`;
 });
-console.log(spriteAnimations[chooseState].loc.length);
+document.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight") {
+        chooseState = "Run"
+    } else if (e.key === "f" || e.key === "F") {
+        chooseState = "Shot_1"
+    } else if (e.key === "d" || e.key === "D") {
+        chooseState = "Shot_2"
+    } else if (e.key === "r" || e.key === "R") {
+        chooseState = "Recharge"
+
+    } else if (e.key === "g" || e.key === "G") {
+        chooseState = "Grenade"
+    }
+    playerImage.src = `${chooseState}.png`;
+});
+
+document.addEventListener("keyup", e => {
+    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D" || e.key === "f" || e.key === "F") {
+        chooseState = "Idle"
+    }
+    playerImage.src = `${chooseState}.png`;
+});
+
 function animate() {
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     let position = Math.floor(gameFrame / staggerFrames) % spriteAnimations[chooseState].loc.length;
@@ -86,4 +107,6 @@ function animate() {
     gameFrame++;
     requestAnimationFrame(animate);
 }
+
+
 animate();
